@@ -20,15 +20,21 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const formData = await request.formData();
     const file = formData.get("file");
+    const requestedKey = formData.get("key");
 
     if (!file || !(file instanceof File)) {
       return API.error("Missing or invalid file", request, 400);
     }
 
+    const normalizedKey =
+      typeof requestedKey === "string" && requestedKey.trim().length > 0
+        ? requestedKey.trim()
+        : undefined;
+
     // Generate unique filename with timestamp
     const timestamp = Date.now();
     const extension = file.name.split(".").pop() || "";
-    const filename = `${timestamp}-${file.name}.${extension}`;
+    const filename = normalizedKey || `${timestamp}-${file.name}.${extension}`;
 
     // Upload to R2 bucket
     const object = await bucket.put(filename, file, {
@@ -48,6 +54,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         key: object.key,
         size: file.size,
         type: file.type,
+        replaced: Boolean(normalizedKey),
       },
       request
     );

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/pages/api/upload.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1763941296746,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1763941296746,
+            "name": "Commit-0",
+            "content": "import type { APIRoute } from \"astro\";\nimport { API } from \"../../utils/api\";\n\nexport const POST: APIRoute = async ({ request, locals }) => {\n  // Set the origin for the API\n  API.init((locals.runtime as any).env.ORIGIN);\n\n  // Handle CORS preflight requests\n  if (request.method === \"OPTIONS\") {\n    console.log(\"CORS preflight request from:\", request.headers.get(\"Origin\"));\n    return API.cors(request);\n  }\n\n  try {\n    // Check if bucket is available\n    const bucket = locals.runtime.env.CLOUD_FILES;\n    if (!bucket) {\n      return API.error(\"Cloud storage not configured\", request, 500);\n    }\n\n    const formData = await request.formData();\n    const file = formData.get(\"file\");\n    const requestedKey = formData.get(\"key\");\n\n    if (!file || !(file instanceof File)) {\n      return API.error(\"Missing or invalid file\", request, 400);\n    }\n\n    const normalizedKey =\n      typeof requestedKey === \"string\" && requestedKey.trim().length > 0\n        ? requestedKey.trim()\n        : undefined;\n\n    // Generate unique filename with timestamp\n    const timestamp = Date.now();\n    const extension = file.name.split(\".\").pop() || \"\";\n    const filename = normalizedKey || `${timestamp}-${file.name}.${extension}`;\n\n    // Upload to R2 bucket\n    const object = await bucket.put(filename, file, {\n      httpMetadata: {\n        contentType: file.type,\n      },\n    });\n\n    if (!object) {\n      return API.error(\"Failed to upload file\", request, 500);\n    }\n\n    return API.success(\n      {\n        success: true,\n        filename,\n        key: object.key,\n        size: file.size,\n        type: file.type,\n        replaced: Boolean(normalizedKey),\n      },\n      request\n    );\n  } catch (error) {\n    console.error(\"Upload error:\", error);\n    return API.error(\"Upload failed\", request, 500);\n  }\n};\n"
+        }
+    ]
+}
