@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1763993647564,
@@ -24,6 +24,14 @@
                 {
                     "date": 1763997681679,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,10 @@\n-import { allowedOrigins as configAllowedOrigins } from \"../../astro.config.mjs\";\n-// export const allowedOrigins = ['https://jscss.webflow.io', 'http://localhost:4321', 'http://localhost:8787']\n \n // API Response utilities for consistent handling across endpoints\n export const API = {\n   // Allowed origins sourced from Astro config and cloned for mutation safety\n   // allowedOrigins: [...configAllowedOrigins],\n-  allowedOrigins: ['https://jscss.webflow.io', 'http://localhost:4321', 'http://localhost:8787'],\n+  allowedOrigins: [import.meta.env.ORIGIN, import.meta.env.ORIGIN_DEV, 'http://localhost:4321', 'http://localhost:8787'],\n \n   // CORS headers\n   corsHeaders: {\n     \"Access-Control-Allow-Methods\": \"GET, POST, PUT, DELETE, OPTIONS\",\n"
+                },
+                {
+                    "date": 1764001033209,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n // API Response utilities for consistent handling across endpoints\n export const API = {\n   // Allowed origins sourced from Astro config and cloned for mutation safety\n   // allowedOrigins: [...configAllowedOrigins],\n-  allowedOrigins: [import.meta.env.ORIGIN, import.meta.env.ORIGIN_DEV, 'http://localhost:4321', 'http://localhost:8787'],\n+  allowedOrigins: ['https://risehealthaz.webflow.io','https://risehealthaz.webflow.io', 'http://localhost:4321', 'http://localhost:8787'],\n \n   // CORS headers\n   corsHeaders: {\n     \"Access-Control-Allow-Methods\": \"GET, POST, PUT, DELETE, OPTIONS\",\n"
+                },
+                {
+                    "date": 1764001069039,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n // API Response utilities for consistent handling across endpoints\n export const API = {\n   // Allowed origins sourced from Astro config and cloned for mutation safety\n   // allowedOrigins: [...configAllowedOrigins],\n-  allowedOrigins: ['https://risehealthaz.webflow.io', 'https://risehealthaz.webflow.io', 'http://localhost:4321', 'http://localhost:8787'],\n+  allowedOrigins: ['https://www.risehealthaz.com', 'https://risehealthaz.webflow.io', 'http://localhost:4321', 'http://localhost:8787'],\n \n   // CORS headers\n   corsHeaders: {\n     \"Access-Control-Allow-Methods\": \"GET, POST, PUT, DELETE, OPTIONS\",\n"
                 }
             ],
             "date": 1763993647564,
