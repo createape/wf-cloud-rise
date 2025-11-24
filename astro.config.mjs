@@ -19,7 +19,7 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  //
+
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
